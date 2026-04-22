@@ -1,6 +1,7 @@
 import {Server} from "http"
 import mongoose from "mongoose";
 import app from "./app";
+import { envVars } from "./app/config/env";
 
 
 
@@ -8,9 +9,7 @@ let server: Server;
 
 const startServer = async () => {
     try {
-        await mongoose.connect(
-            "mongodb+srv://mongodb:<db_password>@cluster0.y5njkct.mongodb.net/?appName=Cluster0"
-        );
+        await mongoose.connect(envVars.DB_URL);
 
         console.log("Connected to DB")
 
