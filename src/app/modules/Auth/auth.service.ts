@@ -5,25 +5,37 @@ import { User } from "../User/user.model";
 import bcrypt from "bcrypt";
 
 
-export const registerUser = async(user: TUser) => {
-    console.log(user,"user")
-    const isUserExist =await User.findOne({ email: user.email });
-    if (isUserExist) {
-        throw new AppError(500,"User already exist");
-    }
-    const result = await User.create(user);
-    console.log(result,"result")
-    const userData = {
-        name: result.name,
-        email: result.email,
-        role: result.role,
-        _id: result._id
-    }
-    const token =useToken(userData)
-    return token;
-}
+
+const registerUser = async (user: TUser) => {
+  const isUserExist = await User.findOne({ email: user.email });
+
+  if (isUserExist) {
+    throw new AppError(409, "User already exist");
+  }
+
+  // 🔐 HASH PASSWORD HERE
+  const hashedPassword = await bcrypt.hash(user.password, 10);
+
+  const result = await User.create({
+    ...user,
+    password: hashedPassword,
+  });
+
+  const userData = {
+    name: result.name,
+    email: result.email,
+    role: result.role,
+    _id: result._id,
+  };
+
+  const token = useToken(userData);
+
+  return token;
+};
+
+
 const logInUser = async (email: string, password: string) => {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
     throw new AppError(404, "User not found");
@@ -42,11 +54,8 @@ const logInUser = async (email: string, password: string) => {
     _id: user._id,
   };
 
-  const token = useToken(userData);
-
-  return token;
+  return useToken(userData);
 };
-
 
 export const AuthService = {
     registerUser,
