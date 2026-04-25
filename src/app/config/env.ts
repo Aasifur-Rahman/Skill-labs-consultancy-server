@@ -5,11 +5,13 @@ dotenv.config();
 interface EnvConfig {
     PORT: string;
     DB_URL: string;
-    NODE_ENV: "development" | "production"
+    NODE_ENV: "development" | "production",
+    JWT_SECRET: string;
+    JWT_EXPIRES_IN: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
-    const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV"]
+    const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV", "JWT_SECRET", "JWT_EXPIRES_IN"];
 
     requiredEnvVariables.forEach((key) => {
         if(!process.env[key]) {
@@ -20,7 +22,9 @@ const loadEnvVariables = (): EnvConfig => {
     return {
         PORT: process.env.PORT as string,
         DB_URL: process.env.DB_URL!,
-        NODE_ENV: process.env.NODE_ENV as "development" | "production"
+        NODE_ENV: process.env.NODE_ENV as "development" | "production",
+        JWT_SECRET: process.env.JWT_SECRET!,
+        JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN!,
     }
 
 }
