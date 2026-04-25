@@ -1,4 +1,7 @@
-const createUser = async () => {
+import { Request, Response } from "express";
+import { User } from "./user.model";
+
+const createUser = async (req: Request, res: Response) => {
   const { name, email, password, role, phone } = req.body;
 
   try {
@@ -7,7 +10,7 @@ const createUser = async () => {
       email,
       password,
       role,
-      phone
+      phone,
     });
 
     res.status(201).json(user);

@@ -1,38 +1,38 @@
+import { StatusCodes } from "http-status-codes";
+import { envVars } from "../../config/env";
 import { AppError } from "../../errorHelpers/AppError";
 import { useToken } from "../../utils/token";
-import { TUser } from "../User/user.interface";
+import { IUser } from "../User/user.interface";
 import { User } from "../User/user.model";
 import bcrypt from "bcrypt";
 
+const registerUser = async (payload: Partial<IUser>) => {
+  const { email, password, ...rest } = payload;
 
+  if (!email || !password) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Email and password required");
+  }
 
-const registerUser = async (user: TUser) => {
-  const isUserExist = await User.findOne({ email: user.email });
+  const isUserExist = await User.findOne({ email });
 
   if (isUserExist) {
-    throw new AppError(409, "User already exist");
+    throw new AppError(StatusCodes.BAD_REQUEST, "User already exist");
   }
 
   // 🔐 HASH PASSWORD HERE
-  const hashedPassword = await bcrypt.hash(user.password, 10);
+  const hashedPassword = await bcrypt.hash(
+    password as string,
+    envVars.BCRYPT_SALT_ROUND,
+  );
 
-  const result = await User.create({
-    ...user,
+  const user = await User.create({
+    email,
     password: hashedPassword,
+    ...rest,
   });
 
-  const userData = {
-    name: result.name,
-    email: result.email,
-    role: result.role,
-    _id: result._id,
-  };
-
-  const token = useToken(userData);
-
-  return token;
+  return user;
 };
-
 
 const logInUser = async (email: string, password: string) => {
   const user = await User.findOne({ email }).select("+password");
@@ -58,6 +58,6 @@ const logInUser = async (email: string, password: string) => {
 };
 
 export const AuthService = {
-    registerUser,
-    logInUser
-}
+  registerUser,
+  logInUser,
+};
