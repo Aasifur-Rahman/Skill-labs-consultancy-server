@@ -1,28 +1,40 @@
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 dotenv.config();
 
 interface EnvConfig {
-    PORT: string;
-    DB_URL: string;
-    NODE_ENV: "development" | "production"
+  PORT: string;
+  DB_URL: string;
+  NODE_ENV: "development" | "production";
+  JWT_SECRET: string;
+  JWT_EXPIRES_IN: string;
+  BCRYPT_SALT_ROUND: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
-    const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV"]
+  const requiredEnvVariables: string[] = [
+    "PORT",
+    "DB_URL",
+    "NODE_ENV",
+    "JWT_SECRET",
+    "JWT_EXPIRES_IN",
+    "BCRYPT_SALT_ROUND",
+  ];
 
-    requiredEnvVariables.forEach((key) => {
-        if(!process.env[key]) {
-            throw new Error(`Missing required environment variable ${key}`)
-        }
-    });
-
-    return {
-        PORT: process.env.PORT as string,
-        DB_URL: process.env.DB_URL!,
-        NODE_ENV: process.env.NODE_ENV as "development" | "production"
+  requiredEnvVariables.forEach((key) => {
+    if (!process.env[key]) {
+      throw new Error(`Missing required environment variable ${key}`);
     }
+  });
 
-}
+  return {
+    PORT: process.env.PORT as string,
+    DB_URL: process.env.DB_URL!,
+    NODE_ENV: process.env.NODE_ENV as "development" | "production",
+    JWT_SECRET: process.env.JWT_SECRET as string,
+    JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN as string,
+    BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string,
+  };
+};
 
-export const envVars : EnvConfig = loadEnvVariables()
+export const envVars: EnvConfig = loadEnvVariables();
