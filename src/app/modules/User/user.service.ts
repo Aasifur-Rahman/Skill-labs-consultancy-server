@@ -1,20 +1,25 @@
 import { Request, Response } from "express";
 import { User } from "./user.model";
 
-const createUser = async (req: Request, res: Response) => {
-  const { name, email, password, role, phone } = req.body;
+const getAllUsers =async()=>{
+    const users = await User.find().select("-password");
 
-  try {
-    const user = await User.create({
-      name,
-      email,
-      password,
-      role,
-      phone,
-    });
+    return users;
+}
 
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating user" });
-  }
-};
+const getUserById =async(id:string)=>{
+    const user = await User.findById(id).select("-password");
+
+    return user;
+}
+
+const makeAdmin = async(id:string)=>{
+    const user = await User.findByIdAndUpdate(id, { role: "ADMIN" }, { new: true });
+    return user;
+}
+
+export const UserService = {
+    getAllUsers,
+    getUserById,
+    makeAdmin
+}
