@@ -1,17 +1,19 @@
-import { Types } from "mongoose";
-
-export enum Role {
-  ADMIN = "ADMIN",
+export  enum Role {
   USER = "USER",
+  ADMIN = "ADMIN"
 }
 
-export interface IUser {
-  _id?: Types.ObjectId;
+
+
+export type IUser = {
   name: string;
   email: string;
   password: string;
-  role: Role;
+  role: "USER" | "ADMIN";
   phone?: string;
   createdAt: Date;
   updatedAt: Date;
-}
+};
+
+
+

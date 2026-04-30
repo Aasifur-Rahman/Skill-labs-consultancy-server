@@ -5,7 +5,7 @@ import { ServiceValidationRules } from "./service.validation";
 
 const router = Router();
 
-router.post("/",validateRequest(ServiceValidationRules.createServiceZodSchema),ServiceController.createService);
+router.post("/",validateRequest(ServiceValidationRules.createServiceZodSchema as any),ServiceController.createService);
 router.get("/", ServiceController.getAllServices);
 router.get("/:id", ServiceController.getServiceById);
 
