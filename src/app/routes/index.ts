@@ -5,6 +5,8 @@ import { BookingRoutes } from "../modules/Booking/booking.route";
 import { ServiceRoutes } from "../modules/Service/service.route";
 import { CountryRoutes } from "../modules/Country/country.route";
 import { ConsultationRoutes } from "../modules/Consultation/consultation.route";
+import { TestimonialRoutes } from "../modules/Testimonial/testimonial.route";
+import { FaqRoutes } from "../modules/Faq/faq.route";
 export const router = Router();
 const moduleRoutes =[
     {
@@ -30,6 +32,14 @@ const moduleRoutes =[
     {
         path: "/consultation",
         route: ConsultationRoutes,
+    },
+    {
+        path: "/testimonial",
+        route: TestimonialRoutes,
+    },
+    {
+        path: "/faq",
+        route: FaqRoutes,
     }
 
 ]

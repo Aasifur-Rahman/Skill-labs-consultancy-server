@@ -8,24 +8,26 @@ interface EmailParams {
 }
 
 const transporter = nodemailer.createTransport({
-  host: envVars.SMTP_HOST as string,
-  port: Number(envVars.SMTP_PORT),
+    service: 'gmail', // 
   auth: {
-    user: envVars.SMTP_USER as string,
-    pass: envVars.SMTP_PASS as string,
+    user: envVars.SMTP_USER, 
+    pass: envVars.SMTP_PASS, 
   },
 } as nodemailer.TransportOptions);
 
 const sendEmail = async ({ to, subject, html }: EmailParams): Promise<void> => {
   try {
-    await transporter.sendMail({
-      from: '"Skills-Lab Consultancy" <noreply@skillslab.com>',
+    const info = await transporter.sendMail({
+      from: `"Skills-Lab Consultancy" <${envVars.SMTP_USER}>`, // ✅ must match SMTP user
       to,
       subject,
       html,
     });
+
+    console.log('✅ Email sent:', info.messageId);
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('❌ Error sending email:', error);
+    throw error; // ✅ don't silently fail
   }
 };
 
