@@ -11,8 +11,6 @@ export type IUser = {
   password: string;
   role: "USER" | "ADMIN";
   phone?: string;
-  createdAt: Date;
-  updatedAt: Date;
 };
 
 

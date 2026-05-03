@@ -18,6 +18,9 @@ interface EnvConfig {
   SMTP_PORT: string;
   SMTP_USER: string;
   SMTP_PASS: string;
+  ADMIN_EMAIL: string;
+  ADMIN_PASSWORD: string;
+
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -35,6 +38,8 @@ const loadEnvVariables = (): EnvConfig => {
     "SMTP_PORT",
     "SMTP_USER",
     "SMTP_PASS",
+    "ADMIN_EMAIL",
+    "ADMIN_PASSWORD",
   ];
 
   requiredEnvVariables.forEach((key) => {
@@ -59,6 +64,8 @@ const loadEnvVariables = (): EnvConfig => {
     SMTP_PORT: process.env.SMTP_PORT as string,
     SMTP_USER: process.env.SMTP_USER as string,
     SMTP_PASS: process.env.SMTP_PASS as string,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL as string,
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD as string,
   };
 };
 

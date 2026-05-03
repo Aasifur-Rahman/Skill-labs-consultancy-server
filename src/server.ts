@@ -2,6 +2,9 @@ import {Server} from "http"
 import mongoose from "mongoose";
 import app from "./app";
 import { envVars } from "./app/config/env";
+import bcrypt from "bcryptjs";
+import { User } from "./app/modules/User/user.model";
+import seedAdmin from "./app/utils/seedAdmin";
 
 
 
@@ -24,6 +27,7 @@ const startServer = async () => {
 }
 
 startServer()
+seedAdmin()
 
 
 //unhandled rejection error
@@ -73,3 +77,14 @@ process.on("SIGINT", () => {
 
   process.exit(1);
 });
+
+
+// const seedSuperAdmin = async () => {
+//   const count = await User.countDocuments();
+//   if (count === 0) {
+//     const salt = await bcrypt.genSalt(10);
+//     const passwordHash = await bcrypt.hash('admin123', salt);
+//     await User.create({ email: 'admin@skillslab.com', passwordHash });
+//     console.log('Default super admin created successfully.');
+//   }
+// };
