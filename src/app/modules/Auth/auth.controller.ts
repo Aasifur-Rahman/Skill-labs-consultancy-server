@@ -3,6 +3,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { AuthService } from "./auth.service";
 import { StatusCodes } from "http-status-codes";
+import { setAuthCookie } from "../../utils/setCookie";
 
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
@@ -20,6 +21,8 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
 const logInUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const result = await AuthService.logInUser(email, password);
+
+  setAuthCookie(res, result);
 
   sendResponse(res, {
     statusCode: 200,

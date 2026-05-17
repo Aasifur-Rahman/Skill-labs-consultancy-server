@@ -4,7 +4,12 @@ import { Service } from "./service.model";
 import { ServicesService } from "./service.service";
 
 const createService = catchAsync(async (req, res) => {
-  const service = await ServicesService.createService(req.body);
+  const body = { ...req.body };
+  const payload = {
+    ...body,
+    ...(req.file && { icon: req.file.path }),
+  };
+  const service = await ServicesService.createService(payload);
   sendResponse(res, {
     statusCode: 200,
     success: true,
