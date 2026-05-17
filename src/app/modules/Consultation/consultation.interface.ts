@@ -1,7 +1,8 @@
 export interface IConsultationRequest {
-  name: string;
-  email: string;
-  phone: string;
-  serviceType: string;
-  time: string;
+ name: string;
+  title: string;
+  bio: string;
+  specialties: string[];
+  imageUrl: string;
+  isDeleted: boolean;
 }

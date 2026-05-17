@@ -4,8 +4,7 @@ import { Booking } from "./booking.model";
 
 const createBooking =async(payload:Partial<IBooking>,userId:string)=>{
     const booking = await Booking.create({
-        ...payload,
-        user:userId
+        ...payload
     })
 
     return booking;
