@@ -1,0 +1,14 @@
+import { Router } from "express";
+import { ServiceController } from "./service.controller";
+import { validateRequest } from "../../middlewares/validateRequest";
+import { ServiceValidationRules } from "./service.validation";
+import { multerUpload } from "../../config/multer.config";
+import { checkAuth } from './../../middlewares/checkAuth';
+
+const router = Router();
+
+router.post("/", multerUpload.single("image"),checkAuth("ADMIN"),validateRequest(ServiceValidationRules.createServiceZodSchema as any) ,ServiceController.createService);
+router.get("/", ServiceController.getAllServices);
+router.get("/:id", ServiceController.getServiceById);
+
+export const ServiceRoutes = router;

@@ -2,7 +2,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 
-import { TErrrorSourses } from '../interfaces/error';
+import { TErrorSources } from '../interfaces/error.type';
 import { handleCastError } from '../helpers/handleCaseError';
 import { handleDuplicateError } from '../helpers/handleDuplicateError';
 import { handleZodError } from '../helpers/handleZodError';
@@ -17,7 +17,7 @@ const globalErrorHandler = (err: any, req: Request, res: Response,next:NextFunct
 
   let statusCode = 500;
   let message = 'Something went wrong';
-  let errorSources: TErrrorSourses[] = [];
+  let errorSources: TErrorSources[] =  [];
 
   if (err.name === 'CastError') {
     const simplifiedError = handleCastError(err);
@@ -30,13 +30,14 @@ const globalErrorHandler = (err: any, req: Request, res: Response,next:NextFunct
   } else if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
     statusCode = simplifiedError.statusCode;
-    message = simplifiedError.message;
-    errorSources = simplifiedError.errorSource;
+    message = simplifiedError.message; 
+    errorSources = simplifiedError.errorSources?? [];
+
   } else if (err.name === 'ValidationError') {
     const simplifiedError = handleValidationError(err);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
-    errorSources = simplifiedError.errorSourses;
+    errorSources = simplifiedError.errorSources;
   } else if (err instanceof AppError) {
     statusCode = err.statusCode;
     message = err.message;
